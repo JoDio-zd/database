@@ -34,9 +34,11 @@ class login(QMainWindow):
         self.super = self.new_button(s='管理员登录', fz=12, place=[0, 570, 100, 30])
         self.super.setStyleSheet("color:grey;border:none;")
         self.super.clicked.connect(self.check)
+
 # -------------管理员登录
 
     def check(self):
+        '管理员登录页面显示与登录提交'
         self.title.hide()
         self.button.hide()
         newbutton = self.new_button(s='登录', fz=17, place=[160, 400, 80, 40])
@@ -49,6 +51,7 @@ class login(QMainWindow):
         newbutton.clicked.connect(lambda: self.root(self.username_box.text(), self.password_box.text(), newbutton))
 
     def root(self, username, password, button):
+        '管理员登录检测与管理员功能页面显示'
         if username == 'root' and password == 'root':
             QMessageBox.information(self, 'what', '登录成功!')
             self.hide()
@@ -78,6 +81,7 @@ class login(QMainWindow):
 # ---------------以下是管理员的方法
 
     def add_method(self):
+        '添加内容'
         self.win4.add.hide()
         self.win4.delete.hide()
         self.win4.change.hide()
@@ -98,6 +102,7 @@ class login(QMainWindow):
         btn.show()
 
     def showplace(self, model, tablename, insertcontent):
+        '添加内容的处理'
         model.clear()
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
@@ -140,6 +145,7 @@ class login(QMainWindow):
         connection.close()
 
     def delete_method(self):
+        '删除内容'
         self.win4.add.hide()
         self.win4.delete.hide()
         self.win4.change.hide()
@@ -160,6 +166,7 @@ class login(QMainWindow):
         btn.show()
 
     def showplace2(self, model, tablename, deletecontent):
+        '删除内容的处理'
         model.clear()
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
@@ -207,6 +214,7 @@ class login(QMainWindow):
         connection.close()
 
     def change_method(self):
+        '修改内容'
         self.win4.add.hide()
         self.win4.delete.hide()
         self.win4.change.hide()
@@ -235,6 +243,7 @@ class login(QMainWindow):
         btn.clicked.connect(lambda: self.showplace3(model, self.win4.box1.text(), self.win4.box2.text(), self.win4.box3.text(), self.win4.box4.text()))
     
     def showplace3(self, model, tablename, columnname, mainkey, value):
+        '修改内容的处理'
         model.clear()
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
@@ -284,6 +293,7 @@ class login(QMainWindow):
         connection.close()
 
     def search_method(self):
+        '搜索内容'
         self.win4.add.hide()
         self.win4.delete.hide()
         self.win4.change.hide()
@@ -308,6 +318,7 @@ class login(QMainWindow):
         btn.clicked.connect(lambda: self.showplace4(model, self.win4.box1.text(), self.win4.box2.text(), self.win4.box3.text()))
 
     def showplace4(self, model, tablename, columnname, value):
+        '搜索内容的处理'
         model.clear()
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
@@ -348,7 +359,10 @@ class login(QMainWindow):
                 n += 1
             model.addTopLevelItem(a)
         connection.close()
+
 # ---------------
+
+# --------------以下为QMainWindow部分方法重写
 
     def newlabel(self, s='', fz=30, size = [100, 100, 200, 200]):
         '新文本框'
@@ -373,6 +387,7 @@ class login(QMainWindow):
         return box
 
     def checkbox(self, fz=30, s='', place = [100, 100, 200, 200]):
+        '选择框重写'
         checkbox = QRadioButton(s, self)
         checkbox.setGeometry(place[0], place[1], place[2], place[3])
         font = QFont()
@@ -382,6 +397,7 @@ class login(QMainWindow):
         return checkbox
 
     def new_button(self, s='', fz=30, place = [100, 100, 200, 200]):
+        '按钮重写'
         button = QPushButton(s, self)
         button.setGeometry(place[0], place[1], place[2], place[3])
         font = QFont()
@@ -390,9 +406,11 @@ class login(QMainWindow):
         button.setFont(font)
         button.setFont(font)
         return button
-        
+
+# -------------------------
+
     def commit(self):
-        '点击登录进行提交'
+        '登录提交'
         if self.choose == '':
             QMessageBox.information(self, 'what','请选择之后再进行登录')
         else:
@@ -430,7 +448,7 @@ class login(QMainWindow):
                 self.choose = False
     # 为数据库创建其他的用户来修改权限
     def login_test(self, is_teacher = True):
-        '连接数据库以获取登陆信息'
+        '连接数据库以获取登录信息'
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
                                 password='e2c26752cdf8_#@Aa',
@@ -458,7 +476,7 @@ class login(QMainWindow):
                 connection.close()
 
     def new_face(self, choose):
-        '教师服务端'
+        '服务端——第二层页面，分别提供教师或者学生的一些操作'
         self.win2 = login()
         self.win2.username.hide()
         self.win2.password.hide()
@@ -508,7 +526,11 @@ class login(QMainWindow):
         self.win2.show()
                     
     def deal(self, choose):
-        '针对第二个交互界面选项结果处理'
+        '''
+        针对第二层交互界面选项结果处理，
+        并生成我们所要的第三层页面，
+        并处理我们在第三层页面的各种操作并及时返回
+        '''
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
                                 password='e2c26752cdf8_#@Aa',
@@ -527,6 +549,7 @@ class login(QMainWindow):
         self.win3.checkbox2.hide()
         self.win3.checkbox1.hide()
         self.win3.title.hide()
+        self.win3.super.hide()
         self.t_or_c = 0
         print('你选择的是%s' % button.objectName())
         if button.objectName() == '1':
@@ -722,7 +745,7 @@ class login(QMainWindow):
         back.clicked.connect(self.back)
     
     def exe(self, re, value, model):
-        '查询学生信息'
+        '第三层页面查询学生信息'
         model.clear()
         ans = []
         for i in re:
@@ -739,7 +762,7 @@ class login(QMainWindow):
                 model.addTopLevelItem(a)
     
     def texe(self, re, value, model):
-        '查询老师信息'
+        '第三层页面查询老师信息'
         model.clear()
         ans = []
         for i in re:
@@ -756,6 +779,7 @@ class login(QMainWindow):
                 model.addTopLevelItem(a)
     
     def cexe(self, re, value, model, t_or_c):
+        '第三层页面处理课程信息查询'
         model.clear()
         ans = []
         if t_or_c == 0:
@@ -774,6 +798,7 @@ class login(QMainWindow):
                 model.addTopLevelItem(a)
 
     def scoreexe(self, re, value, model, t_or_c):
+        '第三层页面处理成绩的查询'
         model.clear()
         ans = []
         if t_or_c == 1:
@@ -792,6 +817,7 @@ class login(QMainWindow):
                 model.addTopLevelItem(a)
 
     def modify(self, re, sid, cid, score):
+        '第三层页面老师对于学生成绩的修改'
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
                                 password='e2c26752cdf8_#@Aa',
@@ -823,13 +849,16 @@ class login(QMainWindow):
         connection.close()
 
     def getchoice(self, i=0):
+        '下拉式选框确定查询依据'
         self.t_or_c = i
 
     def back(self):
+        '第三层页面提供的返回按钮'
         self.win2.show()
         self.win3.hide()
 
     def chooseclass(self, cid):
+        '学生的选课事务处理'
         connection = pymysql.connect(host='pc-bp18rn0tqu85a1600-public.rwlb.rds.aliyuncs.com',
                                 user='lab_33726443',
                                 password='e2c26752cdf8_#@Aa',
